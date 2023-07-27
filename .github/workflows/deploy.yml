@@ -2,10 +2,10 @@
 on:
   push:
 
-name: Build
+name: Publish release
 jobs:
   release:
-    name: Release
+    name: Build contracts
     runs-on: [self-hosted, heavy]
     strategy:
       matrix:
