@@ -20,16 +20,11 @@ jobs:
           echo $(date) > bin/aurora-${{ matrix.profile }}.wasm
           echo $(date) > bin/aurora-factory-${{ matrix.profile }}.wasm
       - run: ls -lH bin/aurora-*${{ matrix.profile }}.wasm
-      - name: Upload the aurora-${{ matrix.profile }}.wasm artifact
+      - name: Upload ${{ matrix.profile }} artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: aurora-${{ matrix.profile }}.wasm
-          path: bin/aurora-${{ matrix.profile }}.wasm
-      - name: Upload the aurora-factory-${{ matrix.profile }}.wasm artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: aurora-factory-${{ matrix.profile }}.wasm
-          path: bin/aurora-factory-${{ matrix.profile }}.wasm
+          name: aurora-${{ matrix.profile }}-afticats
+          path: bin
 
   publish:
     name: Publish contracts on Github
