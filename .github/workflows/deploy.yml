@@ -38,4 +38,4 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v2
-      - run: ls -la bin
+      - run: ls -la
