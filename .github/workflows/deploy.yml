@@ -1,0 +1,41 @@
+---
+on:
+  push:
+    tags:
+      - '*'
+name: Build
+jobs:
+  release:
+    name: Release
+    runs-on: [self-hosted, heavy]
+    strategy:
+      matrix:
+        profile: [mainnet, testnet]
+    steps:
+      - name: Potential broken submodules fix
+        run: |
+          git checkout -f $(git -c user.name=x -c user.email=x@x commit-tree $(git hash-object -t tree /dev/null) < /dev/null) || :
+      - name: Clone the repository
+        uses: actions/checkout@v3
+      - run: |
+          touch bin/aurora-${{ matrix.profile }}.wasm
+          touch bin/aurora-fatory-${{ matrix.profile }}.wasm
+      - run: ls -lH bin/aurora-*${{ matrix.profile }}.wasm
+      - name: Upload the aurora-${{ matrix.profile }}.wasm artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: aurora-${{ matrix.profile }}.wasm
+          path: bin/aurora-${{ matrix.profile }}.wasm
+      - name: Upload the aurora-factory-${{ matrix.profile }}.wasm artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: aurora-factory-${{ matrix.profile }}.wasm
+          path: bin/aurora-factory-${{ matrix.profile }}.wasm
+
+  publish:
+    name: Publish contracts on Github
+    runs-on: [self-hosted, heavy]
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+      - run: ls -la bin
