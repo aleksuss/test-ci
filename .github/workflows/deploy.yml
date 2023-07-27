@@ -4,7 +4,7 @@ on:
 
 name: Publish release
 jobs:
-  release:
+  build:
     name: Build contracts
     runs-on: [self-hosted, heavy]
     strategy:
@@ -34,6 +34,7 @@ jobs:
   publish:
     name: Publish contracts on Github
     runs-on: [self-hosted, heavy]
+    needs: build
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v2
