@@ -1,6 +1,8 @@
 ---
 on:
   push:
+    tags:
+      - '*'
 
 name: Publish release
 jobs:
@@ -20,17 +22,11 @@ jobs:
           echo $(date) > bin/aurora-${{ matrix.profile }}.wasm
           echo $(date) > bin/aurora-factory-${{ matrix.profile }}.wasm
       - run: ls -lH bin/aurora-*${{ matrix.profile }}.wasm
-      - name: Upload ${{ matrix.profile }} artifacts
-        uses: actions/upload-artifact@v2
+      - name: Upload contracts for ${{ github.ref }} release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: aurora-${{ matrix.profile }}-afticats
-          path: bin
-
-  publish:
-    name: Publish contracts on Github
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-      - run: ls -la
+          tag: ${{ github.ref }}
+          file: bin/aurora*${{ matrix.profile }}.wasm
+          overwrite: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file_glob: true
