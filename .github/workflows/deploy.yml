@@ -28,5 +28,4 @@ jobs:
           tag: ${{ github.ref }}
           file: bin/aurora*${{ matrix.profile }}.wasm
           overwrite: true
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
           file_glob: true
