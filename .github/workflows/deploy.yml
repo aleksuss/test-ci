@@ -22,10 +22,32 @@ jobs:
           echo $(date) > bin/aurora-${{ matrix.profile }}.wasm
           echo $(date) > bin/aurora-factory-${{ matrix.profile }}.wasm
       - run: ls -lH bin/aurora-*${{ matrix.profile }}.wasm
-      - name: Upload contracts for ${{ github.ref }} release
+      - name: Upload aurora-${{ matrix.profile }}.wasm artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: aurora-${{ matrix.profile }}.wasm
+          path: bin/aurora-${{ matrix.profile }}.wasm
+      - name: Upload aurora-factory-${{ matrix.profile }}.wasm artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: aurora-factory-${{ matrix.profile }}.wasm
+          path: bin/aurora-factory-${{ matrix.profile }}.wasm
+
+  publish:
+    name: Publish contracts
+    runs-on: [ self-hosted, heavy ]
+    needs: build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+      - run: |
+          sudo apt-get install tree
+          tree .
+      - name: Publish contracts for ${{ github.ref }} release
         uses: svenstaro/upload-release-action@v2
         with:
           tag: ${{ github.ref }}
-          file: bin/aurora*${{ matrix.profile }}.wasm
+          file: aurora*.wasm
           overwrite: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           file_glob: true
