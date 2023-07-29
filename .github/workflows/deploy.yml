@@ -25,21 +25,15 @@ jobs:
       - name: Upload aurora-${{ matrix.profile }}.wasm artifact
         uses: actions/upload-artifact@v3
         with:
-          name: aurora-${{ matrix.profile }}.wasm
-          path: bin/aurora-${{ matrix.profile }}.wasm
-      - name: Upload aurora-factory-${{ matrix.profile }}.wasm artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: aurora-factory-${{ matrix.profile }}.wasm
-          path: bin/aurora-factory-${{ matrix.profile }}.wasm
-
+          name: contracts
+          path: bin/aurora*${{ matrix.profile }}.wasm
   publish:
     name: Publish contracts
     runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
       - run: |
           sudo apt-get install tree
           tree .
@@ -47,7 +41,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           tag: ${{ github.ref }}
-          file: aurora*.wasm
+          file: contracts/aurora*.wasm
           overwrite: true
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file_glob: true
