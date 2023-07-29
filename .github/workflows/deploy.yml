@@ -39,7 +39,6 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           tag: ${{ github.ref }}
-          file: contracts/aurora-mainnet.wasm
-          #overwrite: true
-          #repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: contracts/aurora-*.wasm
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           file_glob: true
