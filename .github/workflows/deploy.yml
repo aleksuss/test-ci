@@ -29,4 +29,4 @@ jobs:
           file: bin/aurora-*${{ matrix.profile }}.wasm
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file_glob: true
-          override: true
+#          override: true
