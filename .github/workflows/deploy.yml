@@ -34,9 +34,7 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
-      - run: |
-          sudo apt-get install tree
-          tree .
+      - run: ls -la contracts
       - name: Publish contracts for ${{ github.ref }} release
         uses: svenstaro/upload-release-action@v2
         with:
