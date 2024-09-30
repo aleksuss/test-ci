@@ -14,12 +14,12 @@ jobs:
       - name: Run a script
         run: |
           echo "This job runs every minute."
-          exit 1
-  
+          exit 0
+
   notifier:
     runs-on: ubuntu-latest
-    if: failure()
     needs: run-every-minute
+    if: failure()
 #        uses: actions/slack@v3
     steps:
       - name: Notify
