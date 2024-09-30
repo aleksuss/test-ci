@@ -1,0 +1,16 @@
+name: Run Job Every Minute
+
+on:
+  schedule:
+    - cron: '*/1 * * * *'
+
+jobs:
+  run-every-minute:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run a script
+        run: echo "This job runs every minute."
