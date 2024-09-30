@@ -7,7 +7,6 @@ on:
 jobs:
   run-every-minute:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -16,10 +15,12 @@ jobs:
         run: |
           echo "This job runs every minute."
           exit 1
-    notifier:
-      if: failure()
-      needs: run-every-minute
+  
+  notifier:
+    runs-on: ubuntu-latest
+    if: failure()
+    needs: run-every-minute
 #        uses: actions/slack@v3
-      steps:
-        - name: Notify
-          run: echo "Job failed"
+    steps:
+      - name: Notify
+        run: echo "Job failed"
