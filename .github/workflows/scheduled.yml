@@ -14,13 +14,16 @@ jobs:
       - name: Run a script
         run: |
           echo "This job runs every minute."
-          exit 0
+          exit 1
 
   notifier:
     runs-on: ubuntu-latest
     needs: run-every-minute
     if: failure()
-#        uses: actions/slack@v3
     steps:
-      - name: Notify
-        run: echo "Job failed"
+      - uses: 8398a7/action-slack@v3
+        with:
+         status: ${{ job.status }}
+         fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest # selectable (default: repo,message)
+        env:
+         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
