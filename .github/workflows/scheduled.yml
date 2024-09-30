@@ -2,7 +2,7 @@ name: Run Job Every Minute
 
 on:
   schedule:
-    - cron: '*/1 * * * *'
+    - cron: '*/5 * * * *'
 
 jobs:
   run-every-minute:
@@ -13,4 +13,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run a script
-        run: echo "This job runs every minute."
+        run: |
+          echo "This job runs every minute."
+          exit 1
+    notifier:
+      if: failure()
+      needs: run-every-minute
+#        uses: actions/slack@v3
+      steps:
+        - name: Notify
+          run: echo "Job failed"
